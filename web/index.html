@@ -1,0 +1,350 @@
+<!DOCTYPE html><html class="h-full" lang="es" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Scribe — Cuaderno Técnico de Síntesis</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&amp;family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..500,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['"JetBrains Mono"', 'monospace'],
+            sans: ['Geist', 'sans-serif'],
+          },
+          colors: {
+            blueprint: '#090a0c',
+            gridline: 'rgba(255, 255, 255, 0.08)',
+            'tech-red': '#ef4444',
+            'tech-red-bright': '#f87171',
+            'tech-dim': '#666666',
+            'tech-muted': '#8e8e93',
+            'tech-light': '#d4d4d8',
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    /* Technical millimeter / engineering grid background */
+    .tech-grid {
+      background-color: #0b0b0d;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.075) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.075) 1px, transparent 1px);
+      background-size: 22px 22px;
+      background-position: -1px -1px;
+    }
+    .tech-grid-box {
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.065) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.065) 1px, transparent 1px);
+      background-size: 22px 22px;
+    }
+    /* Custom thin technical scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27272a;
+      border-radius: 2px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ef4444;
+    }
+  </style>
+</head>
+<body class="tech-grid text-tech-light font-mono min-h-screen flex flex-col selection:bg-red-950 selection:text-red-200 antialiased p-4 sm:p-7 lg:p-10">
+<div class="max-w-[1280px] w-full mx-auto flex flex-col flex-1">
+<!-- SECTION 1: "IMPORTANT" RED FRAMED BLOCK (TRANSCRIPT / INPUT STREAM) -->
+<section class="mb-9">
+<!-- Outer Red Box mimicking the template -->
+<div class="border-2 border-tech-red bg-[#0c0d10]/90 relative shadow-[0_0_20px_rgba(239,68,68,0.07)]">
+<!-- Header row of the Red Important Box -->
+<div class="border-b border-tech-red/80 px-3.5 py-2 bg-red-950/20">
+<span class="font-bold text-tech-red tracking-widest text-xs uppercase"><span class="inline-block w-2 h-2 bg-tech-red"></span> IMPORTANT</span>
+</div>
+<!-- Box Body: Millimeter Grid + Technical Transcripts Stream -->
+<div class="tech-grid-box p-4 sm:p-5 relative">
+<!-- Live Audio Transcript entries -->
+<div class="mt-4 grid gap-3 border border-tech-red/50 bg-black/40 p-3">
+<textarea id="notes-input" rows="5" class="w-full resize-y border border-neutral-700 bg-neutral-950 p-3 text-xs leading-relaxed text-white outline-none focus:border-tech-red" placeholder="Pegá aquí las notas de la reunión..."></textarea>
+<div class="flex flex-wrap items-center gap-2">
+<label class="flex items-center gap-2 text-xs text-neutral-300">
+<span>FECHA</span>
+<input id="meeting-date" type="date" aria-label="Fecha de la reunión" class="border border-neutral-700 bg-neutral-950 p-2 text-xs text-white">
+</label>
+<input id="notes-file" type="file" accept=".txt,text/plain" class="max-w-full text-xs text-neutral-300">
+<button id="process-notes" class="bg-tech-red px-4 py-2 text-xs font-bold tracking-wider text-white hover:bg-red-500">PROCESAR NOTAS</button>
+<span id="api-status" class="text-xs text-neutral-400">Listo para procesar</span>
+</div>
+</div>
+<!-- Action bar inside IMPORTANT box -->
+</div>
+</div>
+</section>
+<!-- SECTION 2: "NOTES" BLOCK (SYNTHESIS OUTPUT EXACT TO TEMPLATE) -->
+<section class="flex-1 flex flex-col">
+<!-- Section Label exact to reference template -->
+<div class="flex items-center justify-between pb-2 mb-3 border-b-2 border-white/90">
+<h2 class="font-bold text-white text-base sm:text-lg tracking-widest uppercase">
+          NOTES
+        </h2>
+</div>
+<!-- Main Notebook Grid Body (Framed with a technical center vertical divider) -->
+<div id="notes-output" class="whitespace-pre-wrap border border-neutral-800 bg-[#0c0d10]/95 p-4 font-mono text-xs leading-relaxed text-neutral-500">El resultado del pipeline aparecerá acá.</div>
+<div id="notes-template" class="hidden">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 relative">
+<!-- Subtle Center Vertical Axis Divider mimicking engineering lab notebook -->
+<div class="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px -ml-px bg-neutral-800 border-r border-neutral-800/80 pointer-events-none"></div>
+<!-- COLUMN A (LEFT): RESUMEN & DECISIONES -->
+<div class="space-y-8 lg:pr-4">
+<!-- Bloque 1: Resumen Ejecutivo -->
+<div class="space-y-3">
+<div class="flex items-center gap-2 text-xs font-bold tracking-widest text-white border-b border-neutral-800 pb-1.5">
+<span class="text-tech-red font-mono">&gt;</span>
+<span class="">RESUMEN EJECUTIVO (TL;DR)</span>
+</div>
+<div class="text-[13px] leading-relaxed text-neutral-300 font-mono space-y-2.5">
+<p class="text-neutral-100 font-normal">
+                  Se acordó posponer el lanzamiento del MVP al <span class="text-tech-red-bright font-semibold underline decoration-tech-red/50 decoration-1 underline-offset-4">28 de Octubre</span> para conceder una ventana crítica de dos semanas orientada a estabilizar y optimizar la infraestructura de WebSockets de backend.
+                </p>
+<p class="text-neutral-400 font-light text-xs">
+                  Validación UX completada exitosamente reduciendo la fricción a solo 3 pasos en onboarding. El presupuesto suplementario para clusters de procesamiento GPU ha sido validado y ratificado por Tomás.
+                </p>
+</div>
+</div>
+<!-- Bloque 2: Decisiones Acordadas -->
+<div class="space-y-3.5 pt-2">
+<div class="flex items-center justify-between text-xs font-bold tracking-widest text-white border-b border-neutral-800 pb-1.5">
+<div class="flex items-center gap-2">
+<span class="text-tech-red font-mono">&gt;</span>
+<span class="">DECISIONES ACORDADAS</span>
+</div>
+<span class="text-[10px] text-neutral-500 font-normal">[03 HITOS]</span>
+</div>
+<div class="space-y-3 font-mono text-xs">
+<!-- Decision 01 -->
+<div class="flex items-start gap-3 p-2.5 bg-neutral-900/60 border border-neutral-800/80 hover:border-neutral-700 transition-colors">
+<span class="text-tech-red font-bold text-[11px] pt-0.5 select-none">#01</span>
+<div class="space-y-1">
+<div class="text-white font-medium text-[12px] tracking-tight">
+                      Lanzamiento Oficial: 28 de Octubre
+                    </div>
+<div class="text-neutral-400 text-[11px] font-light leading-snug">
+                      Prioridad absoluta a latencia sub-segundo (&lt;300ms) sobre fecha previa preliminar.
+                    </div>
+</div>
+</div>
+<!-- Decision 02 -->
+<div class="flex items-start gap-3 p-2.5 bg-neutral-900/60 border border-neutral-800/80 hover:border-neutral-700 transition-colors">
+<span class="text-tech-red font-bold text-[11px] pt-0.5 select-none">#02</span>
+<div class="space-y-1">
+<div class="text-white font-medium text-[12px] tracking-tight">
+                      Presupuesto de GPU Clusters Aprobado
+                    </div>
+<div class="text-neutral-400 text-[11px] font-light leading-snug">
+                      Asignación de hardware dedicado para solventar el streaming continuo de transcripción de audio.
+                    </div>
+</div>
+</div>
+<!-- Decision 03 -->
+<div class="flex items-start gap-3 p-2.5 bg-neutral-900/60 border border-neutral-800/80 hover:border-neutral-700 transition-colors">
+<span class="text-tech-red font-bold text-[11px] pt-0.5 select-none">#03</span>
+<div class="space-y-1">
+<div class="text-white font-medium text-[12px] tracking-tight">
+                      Congelamiento de Features de Interfaz
+                    </div>
+<div class="text-neutral-400 text-[11px] font-light leading-snug">
+                      Fase de freeze visual estricto; únicamente se pulirán casos límite y estados vacíos.
+                    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- COLUMN B (RIGHT): ACCIONES & PUNTOS CLAVE -->
+<div class="space-y-8 lg:pl-4">
+<!-- Bloque 3: Acciones & Entregables -->
+<div class="space-y-3">
+<div class="flex items-center justify-between text-xs font-bold tracking-widest text-white border-b border-neutral-800 pb-1.5">
+<div class="flex items-center gap-2">
+<span class="text-tech-red font-mono">&gt;</span>
+<span class="">ACCIONES &amp; ENTREGABLES</span>
+</div>
+<span class="text-[10px] text-neutral-500 font-normal">4 TAREAS ASIGNADAS</span>
+</div>
+<!-- Interactive technical checklist -->
+<div class="space-y-2 font-mono" id="action-items-list">
+<!-- Task 1 -->
+<label class="flex items-center justify-between p-2 bg-neutral-900/40 border border-neutral-800 hover:border-neutral-700 cursor-pointer transition-all group">
+<div class="flex items-center gap-3 min-w-0 pr-2">
+<input class="h-3.5 w-3.5 rounded-none bg-black border-neutral-600 text-tech-red focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox">
+<span class="text-xs text-neutral-200 group-hover:text-white transition-colors truncate">
+                      Auditoría de seguridad y latencia WebSockets
+                    </span>
+</div>
+<div class="flex items-center gap-2.5 shrink-0 text-[10px] tracking-wider text-neutral-400">
+<span class="text-neutral-300 font-semibold bg-neutral-800 px-1.5 py-0.5">SOFÍA</span>
+<span class="text-tech-red font-mono">22 OCT</span>
+</div>
+</label>
+<!-- Task 2 -->
+<label class="flex items-center justify-between p-2 bg-neutral-900/40 border border-neutral-800 hover:border-neutral-700 cursor-pointer transition-all group">
+<div class="flex items-center gap-3 min-w-0 pr-2">
+<input class="h-3.5 w-3.5 rounded-none bg-black border-neutral-600 text-tech-red focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox">
+<span class="text-xs text-neutral-200 group-hover:text-white transition-colors truncate">
+                      Finalizar especificaciones de estados vacíos
+                    </span>
+</div>
+<div class="flex items-center gap-2.5 shrink-0 text-[10px] tracking-wider text-neutral-400">
+<span class="text-neutral-300 font-semibold bg-neutral-800 px-1.5 py-0.5">CLARA</span>
+<span class="text-tech-red font-mono">18 OCT</span>
+</div>
+</label>
+<!-- Task 3 -->
+<label class="flex items-center justify-between p-2 bg-neutral-900/40 border border-neutral-800 hover:border-neutral-700 cursor-pointer transition-all group">
+<div class="flex items-center gap-3 min-w-0 pr-2">
+<input class="h-3.5 w-3.5 rounded-none bg-black border-neutral-600 text-tech-red focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox">
+<span class="text-xs text-neutral-200 group-hover:text-white transition-colors truncate">
+                      Documentar arquitectura y enlace Notion
+                    </span>
+</div>
+<div class="flex items-center gap-2.5 shrink-0 text-[10px] tracking-wider text-neutral-400">
+<span class="text-neutral-300 font-semibold bg-neutral-800 px-1.5 py-0.5">TOMÁS</span>
+<span class="text-tech-red font-mono">24 OCT</span>
+</div>
+</label>
+<!-- Task 4 -->
+<label class="flex items-center justify-between p-2 bg-neutral-900/40 border border-neutral-800 hover:border-neutral-700 cursor-pointer transition-all group">
+<div class="flex items-center gap-3 min-w-0 pr-2">
+<input class="h-3.5 w-3.5 rounded-none bg-black border-neutral-600 text-tech-red focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox">
+<span class="text-xs text-neutral-200 group-hover:text-white transition-colors truncate">
+                      Actualizar roadmap y sincronizar Marketing
+                    </span>
+</div>
+<div class="flex items-center gap-2.5 shrink-0 text-[10px] tracking-wider text-neutral-400">
+<span class="text-neutral-300 font-semibold bg-neutral-800 px-1.5 py-0.5">MARTÍN</span>
+<span class="text-tech-red font-mono">15 OCT</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Bloque 4: Puntos Clave / Apuntes de Laboratorio -->
+<div class="space-y-3 pt-2">
+<div class="flex items-center justify-between text-xs font-bold tracking-widest text-white border-b border-neutral-800 pb-1.5">
+<div class="flex items-center gap-2">
+<span class="text-tech-red font-mono">&gt;</span>
+<span class="">PUNTOS CLAVE / APUNTES</span>
+</div>
+<span class="text-[10px] text-neutral-500 font-normal">MINUTA TÉCNICA</span>
+</div>
+<div class="space-y-2.5 font-mono text-xs leading-relaxed text-neutral-300">
+<div class="border-l border-neutral-700 pl-3 py-0.5">
+<span class="text-white font-medium">[01] Validación UX:</span>
+<span class="text-neutral-400"> 6 usuarios beta validaron reducción de registro a 3 pasos directos sin abandonos.</span>
+</div>
+<div class="border-l border-neutral-700 pl-3 py-0.5">
+<span class="text-white font-medium">[02] Rendimiento WebSockets:</span>
+<span class="text-neutral-400"> Pruebas superaron 450 sockets concurrentes; la migración a GPU asegurará flujo sin retardo.</span>
+</div>
+<div class="border-l border-neutral-700 pl-3 py-0.5">
+<span class="text-white font-medium">[03] Sincronización Externa:</span>
+<span class="text-neutral-400"> Se reprograman campañas masivas de Marketing para el viernes 28 de Octubre.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- FOOTER TECHNICAL STATUS BAR -->
+<footer class="mt-8 pt-4 border-t border-neutral-800 text-[11px] font-mono text-neutral-500 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<span class="text-neutral-400 font-semibold uppercase">SCRIBE — CUADERNO TÉCNICO V3.8</span>
+<span class="text-neutral-700">/</span>
+<span class="text-neutral-400">SISTEMA MONOSPACE DE ALTA PRECISIÓN</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="hover:text-neutral-300 transition-colors cursor-pointer">[ESC] VOLVER</span>
+<span class="hover:text-neutral-300 transition-colors cursor-pointer">[⌘↵] PROCESAR</span>
+<span class="hover:text-neutral-300 transition-colors cursor-pointer">[P] IMPRIMIR</span>
+</div>
+</footer>
+</div>
+<!-- SCRIPT MICRO-INTERACTIONS -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Checkbox strikethrough interaction
+      const taskContainer = document.getElementById('action-items-list');
+      if (taskContainer) {
+        taskContainer.querySelectorAll('input[type="checkbox"]').forEach(box => {
+          box.addEventListener('change', (e) => {
+            const labelSpan = e.target.closest('label').querySelector('span.truncate');
+            if (labelSpan) {
+              if (e.target.checked) {
+                labelSpan.classList.add('line-through', 'text-neutral-500');
+              } else {
+                labelSpan.classList.remove('line-through', 'text-neutral-500');
+              }
+            }
+          });
+        });
+      }
+
+      // Copy MD feedback
+      const copyBtn = document.getElementById('copy-btn');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+          const originalText = copyBtn.innerHTML;
+          copyBtn.innerHTML = '<span class="material-symbols-outlined text-[13px] text-tech-red">check</span><span class="text-white">COPIADO</span>';
+          setTimeout(() => {
+            copyBtn.innerHTML = originalText;
+          }, 1500);
+        });
+      }
+
+      // Clear button feedback
+      const clearBtn = document.getElementById('clear-btn');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (taskContainer) {
+            taskContainer.querySelectorAll('input[type="checkbox"]').forEach(box => {
+              box.checked = false;
+              const labelSpan = box.closest('label').querySelector('span.truncate');
+              if (labelSpan) labelSpan.classList.remove('line-through', 'text-neutral-500');
+            });
+          }
+        });
+      }
+
+      // Synthesize button keyboard trigger & click feedback
+      const synthBtn = document.getElementById('synthesize-btn');
+      function triggerSynth() {
+        if (!synthBtn) return;
+        synthBtn.classList.add('brightness-125', 'scale-[0.98]');
+        setTimeout(() => synthBtn.classList.remove('brightness-125', 'scale-[0.98]'), 200);
+      }
+
+      if (synthBtn) {
+        synthBtn.addEventListener('click', triggerSynth);
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+          triggerSynth();
+        }
+      });
+    });
+  </script>
+
+
+<script src="/static/app.js"></script>
+</body></html>

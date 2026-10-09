@@ -1,0 +1,9 @@
+anthropic
+fastapi
+httpx
+presidio-analyzer
+pydantic
+pytest
+python-dotenv
+spacy
+uvicorn[standard]

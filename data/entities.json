@@ -1,0 +1,13 @@
+{
+  "people": [
+    {"id": "p1", "full_name": "Michael Gomez", "aliases": ["Mike", "Mikey"]},
+    {"id": "p2", "full_name": "Jennifer Ortiz", "aliases": ["Jen", "Jenny"]}
+  ],
+  "orgs": [
+    {"id": "o1", "name": "Acme Steel Supply", "aliases": ["Acme"], "role": "vendor"},
+    {"id": "o2", "name": "Vineta Hotel Group", "aliases": ["Vineta"], "role": "client"}
+  ],
+  "projects": [
+    {"id": "j1", "name": "Vineta Hotel", "aliases": ["Vineta"]}
+  ]
+}
