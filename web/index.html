@@ -1,7 +1,7 @@
-<!DOCTYPE html><html class="h-full" lang="es" style=""><head>
+<!DOCTYPE html><html class="h-full" lang="en" style=""><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Scribe — Cuaderno Técnico de Síntesis</title>
+<title>Scribe — Meeting Notes Pipeline</title>
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&amp;family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
@@ -75,15 +75,15 @@
 <div class="tech-grid-box p-4 sm:p-5 relative">
 <!-- Live Audio Transcript entries -->
 <div class="mt-4 grid gap-3 border border-tech-red/50 bg-black/40 p-3">
-<textarea id="notes-input" rows="5" class="w-full resize-y border border-neutral-700 bg-neutral-950 p-3 text-xs leading-relaxed text-white outline-none focus:border-tech-red" placeholder="Pegá aquí las notas de la reunión..."></textarea>
+<textarea id="notes-input" rows="5" class="w-full resize-y border border-neutral-700 bg-neutral-950 p-3 text-xs leading-relaxed text-white outline-none focus:border-tech-red" placeholder="Paste meeting notes here..."></textarea>
 <div class="flex flex-wrap items-center gap-2">
 <label class="flex items-center gap-2 text-xs text-neutral-300">
-<span>FECHA</span>
-<input id="meeting-date" type="date" aria-label="Fecha de la reunión" class="border border-neutral-700 bg-neutral-950 p-2 text-xs text-white">
+<span>MEETING DATE</span>
+<input id="meeting-date" type="date" aria-label="Meeting date" class="border border-neutral-700 bg-neutral-950 p-2 text-xs text-white">
 </label>
 <input id="notes-file" type="file" accept=".txt,text/plain" class="max-w-full text-xs text-neutral-300">
-<button id="process-notes" class="bg-tech-red px-4 py-2 text-xs font-bold tracking-wider text-white hover:bg-red-500">PROCESAR NOTAS</button>
-<span id="api-status" class="text-xs text-neutral-400">Listo para procesar</span>
+<button id="process-notes" class="bg-tech-red px-4 py-2 text-xs font-bold tracking-wider text-white hover:bg-red-500">PROCESS NOTES</button>
+<span id="api-status" class="text-xs text-neutral-400">Ready to process</span>
 </div>
 </div>
 <!-- Action bar inside IMPORTANT box -->
@@ -99,7 +99,7 @@
         </h2>
 </div>
 <!-- Main Notebook Grid Body (Framed with a technical center vertical divider) -->
-<div id="notes-output" class="whitespace-pre-wrap border border-neutral-800 bg-[#0c0d10]/95 p-4 font-mono text-xs leading-relaxed text-neutral-500">El resultado del pipeline aparecerá acá.</div>
+<div id="notes-output" class="whitespace-pre-wrap border border-neutral-800 bg-[#0c0d10]/95 p-4 font-mono text-xs leading-relaxed text-neutral-500">The pipeline result will appear here.</div>
 <div id="notes-template" class="hidden">
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 relative">
 <!-- Subtle Center Vertical Axis Divider mimicking engineering lab notebook -->

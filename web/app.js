@@ -11,16 +11,16 @@ fileInput?.addEventListener("change", async () => {
 
 document.getElementById("process-notes")?.addEventListener("click", async () => {
   if (!notesInput.value.trim()) {
-    statusOutput.textContent = "Error: ingresá las notas primero";
+    statusOutput.textContent = "Error: enter the meeting notes first";
     return;
   }
   if (fileInput.files.length > 0 && !dateInput.value) {
-    statusOutput.textContent = "Error: ingresá la fecha de la reunión para procesar el archivo";
+    statusOutput.textContent = "Error: enter the meeting date before processing a file";
     dateInput.focus();
     return;
   }
 
-  statusOutput.textContent = "Procesando...";
+  statusOutput.textContent = "Processing...";
   try {
     const body = {notes: notesInput.value};
     if (dateInput.value) body.meeting_date = dateInput.value;
@@ -30,12 +30,12 @@ document.getElementById("process-notes")?.addEventListener("click", async () => 
       body: JSON.stringify(body),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.detail?.message || "No se pudo procesar");
+    if (!response.ok) throw new Error(data.detail?.message || "Unable to process notes");
 
     markdownOutput.textContent = data.markdown;
     markdownOutput.classList.remove("text-neutral-500");
     markdownOutput.classList.add("text-neutral-200");
-    statusOutput.textContent = "Completado";
+    statusOutput.textContent = "Completed";
   } catch (error) {
     statusOutput.textContent = `Error: ${error.message}`;
   }

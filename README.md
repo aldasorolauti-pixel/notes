@@ -88,6 +88,13 @@ Set the key in the environment or in a local `.env` file. Never commit it:
 $env:ANTHROPIC_API_KEY = "your-key"
 ```
 
+Or copy the included template and replace its placeholder:
+
+```powershell
+Copy-Item .env.example .env
+notepad .env
+```
+
 ## Run the web app
 
 ```powershell
