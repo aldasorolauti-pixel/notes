@@ -72,3 +72,8 @@ def test_prompt_requires_contiguous_evidence_quotes():
     assert "EVIDENCE MUST BE ONE CONTIGUOUS QUOTE:" in SYSTEM_PROMPT_V1
     assert "one continuous fragment of the notes" in SYSTEM_PROMPT_V1
     assert "never multiple sentences joined together" in SYSTEM_PROMPT_V1
+
+
+def test_prompt_assigns_speaker_label_commitments_to_the_speaker():
+    assert "SPEAKER LABEL OWNERS" in SYSTEM_PROMPT_V1
+    assert "INCLUDING the label" in SYSTEM_PROMPT_V1

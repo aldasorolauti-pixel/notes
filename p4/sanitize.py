@@ -313,6 +313,38 @@ def _roster_candidates(text: str, participants: list[str]) -> list[str]:
     return _roster_details(text, participants)[0]
 
 
+def _extend_roster_names(
+    text: str,
+    roster: list[str],
+    roster_origins: dict[str, set[str]],
+) -> None:
+    """Add capitalized surname tokens that immediately follow roster names."""
+    token_pattern = re.compile(
+        r"(?P<separator>\s+)"
+        r"(?P<token>[A-ZÁÉÍÓÚÜÑ][\wÁÉÍÓÚÜÑáéíóúñü'-]*)"
+    )
+    for name in list(roster):
+        if len(name.split()) != 1:
+            continue
+        name_pattern = re.compile(r"(?<!\w)" + re.escape(name) + r"(?!\w)", re.IGNORECASE)
+        for match in name_pattern.finditer(text):
+            end = match.end()
+            parts = [match.group()]
+            for _ in range(2):
+                following = token_pattern.match(text, end)
+                if following is None or _is_common_word(following.group("token")):
+                    break
+                parts.append(following.group("token"))
+                end = following.end()
+            if len(parts) == 1:
+                continue
+            full_name = " ".join(parts)
+            folded = _fold(full_name)
+            if full_name not in roster:
+                roster.append(full_name)
+                roster_origins.setdefault(folded, set()).add("roster_extension")
+
+
 def _merge_aliases(names: list[str]) -> list[list[str]]:
     groups: list[list[str]] = []
     for name in names:
@@ -414,6 +446,7 @@ def mask(
     """
     participants = participants or []
     roster, roster_origins = _roster_details(text, participants, analyzer)
+    _extend_roster_names(text, roster, roster_origins)
     for catalog_name in _person_terms(
         getattr(analyzer, "_p4_entities", {}),
         getattr(analyzer, "_p4_nicknames", {}),
@@ -544,6 +577,8 @@ def mask(
         {marker: originals[key] for key, marker in mapping.items()},
         case_variants=case_variants,
     )
+    token_map.masked_text = masked_text
+    token_map.occurrence_variants = case_variants
     failures, warnings = _residue_report(masked_text, roster)
     if diagnostics is not None:
         diagnostics.update({

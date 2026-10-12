@@ -20,7 +20,7 @@ NICKNAMES_PATH = ROOT / "data" / "nicknames.json"
 SAMPLES_DIR = ROOT / "samples"
 
 from p4.sanitize import Sanitizer, load_entities, MARKER_RE
-from p4.rehydrate import rehydrate_text
+from p4.rehydrate import rehydrate, rehydrate_text
 
 
 @pytest.fixture(scope="module")
@@ -132,6 +132,17 @@ class TestRoundTrip:
         restored = rehydrate_text(masked, token_map)
         assert restored == text
 
+    def test_evidence_rehydrates_alias_using_original_occurrence(self, sanitizer):
+        text = "Ana Pérez: Ana confirma el cambio."
+        masked, token_map = sanitizer.mask(text, participants=["Ana"])
+        masked_evidence = masked.split(": ", 1)[1]
+        result = rehydrate(
+            {"evidence": masked_evidence, "owner_evidence": masked_evidence},
+            token_map,
+        )
+        assert result["evidence"] == "Ana confirma el cambio."
+        assert result["owner_evidence"] == "Ana confirma el cambio."
+
 
 # ---------- Marker format ----------
 
@@ -148,6 +159,23 @@ class TestMarkerFormat:
 
 
 class TestBilingualRoster:
+    def test_spanish_roster_name_masks_following_surname_in_speaker_label(self, sanitizer):
+        text = "Irene: Irene Valdés presenta el avance. Irene confirma el plazo."
+        masked, token_map = sanitizer.mask(text, participants=["Irene"])
+        assert "Irene" not in masked
+        assert "Valdés" not in masked
+        assert any("Irene Valdés" in aliases for aliases in sanitizer.last_diagnostics["aliases"])
+        assert len([marker for marker in token_map if "PERSON" in marker]) == 1
+
+    def test_english_roster_name_masks_two_following_name_tokens(self, sanitizer):
+        text = "Morgan: Morgan Reed Taylor reviews the draft. Morgan sends it tomorrow."
+        masked, token_map = sanitizer.mask(text, participants=["Morgan"])
+        assert "Morgan" not in masked
+        assert "Reed" not in masked
+        assert "Taylor" not in masked
+        assert any("Morgan Reed Taylor" in aliases for aliases in sanitizer.last_diagnostics["aliases"])
+        assert len([marker for marker in token_map if "PERSON" in marker]) == 1
+
     def test_roster_does_not_include_catalog_without_text_evidence(self, sanitizer):
         _, _ = sanitizer.mask("La reunión trata sobre el calendario del proyecto.")
         assert sanitizer.last_diagnostics["roster"] == {}
