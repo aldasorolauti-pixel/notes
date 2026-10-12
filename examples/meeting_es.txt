@@ -1,1 +1,15 @@
-Reunion breve: Bruno Salas coordina con Lara Mendez. Email: bruno.salas@example.com. Telefono: +54 11 5555 0199. Empresa: Lumen Ficticia. Producto: Faro Azul.
+Reunión de seguimiento del proyecto Brújula con el cliente Lumen Ficticia. Fecha: lunes 12 de octubre.
+
+Lara Mendez: Buenas, arrancamos. El cliente pidió adelantar la entrega de la versión beta para el viernes. Bruno, ¿llegamos?
+
+Bruno Salas: Llegar llegamos, pero hay un riesgo: la integración con el sistema de facturación del cliente todavía no tiene credenciales de prueba y sin eso no puedo cerrar las pruebas.
+
+Lara Mendez: Entendido. Yo me encargo de pedirle las credenciales al cliente hoy mismo. Camila, ¿cómo va el diseño?
+
+Camila Rojas: Falta la pantalla de resumen. Yo la termino mañana y te la mando por correo, Lara. Ah, y propongo dejar el modo oscuro para la segunda versión, no entra en la beta.
+
+Lara Mendez: Perfecto, el modo oscuro queda fuera de la beta. Si llegan las credenciales, la beta sale el viernes con lo que hay. Mi correo es lara.mendez@example.com y mi teléfono es +54 11 5555 0199, por si necesitan algo urgente.
+
+Bruno Salas: Dale. Yo preparo las pruebas de carga para el jueves. Una duda: ¿quién valida el texto legal de los términos y condiciones?
+
+Lara Mendez: No lo sé todavía, queda abierto. Listo, gracias a todos.
