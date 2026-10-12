@@ -13,6 +13,11 @@ htmlcov/
 # Local/generated samples and reports
 test_files/noisy/
 *.log
+outputs/
+reports/
+run_output*
+*_report.*
+*.pdf
 
 # Local research source files are not runtime dependencies.
 papers/

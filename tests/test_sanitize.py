@@ -127,7 +127,7 @@ class TestRoundTrip:
             assert restored == text, f"Round-trip failed for {name}"
 
     def test_roundtrip_with_email_and_phone(self, sanitizer):
-        text = "Call Jenny at (415) 555-0134 or jenny.ortiz@acmesteel.com."
+        text = "Call Jenny at (415) 555-0134 or jenny.ortiz@example.invalid."
         masked, token_map = sanitizer.mask(text)
         restored = rehydrate_text(masked, token_map)
         assert restored == text
